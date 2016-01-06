@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <bean name="downloader" class="com.github.yhb.aop.service.Downloader">
+
+    </bean>
+    <bean id="taskExecutorLogger" class="com.github.yhb.aop.log.TaskLogger">
+
+    </bean>
+    <aop:aspectj-autoproxy proxy-target-class="true" />
+    <aop:config>
+        <aop:aspect id="logger" ref="taskExecutorLogger">
+            <aop:pointcut id="taskExec" expression="execution(public * com.github.yhb.aop.service.Downloader.exec(..))" />
+            <aop:before method="before" pointcut-ref="taskExec"/>
+            <aop:after method="after" pointcut-ref="taskExec"/>
+        </aop:aspect>
+    </aop:config>
+
+</beans>
